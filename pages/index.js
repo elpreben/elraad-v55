@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Layout from '../components/Layout';
 
@@ -11,13 +10,34 @@ export default function Home() {
     setLoading(true);
 
     const formData = new FormData(e.target);
-    await fetch('/api/submit', {
-      method: 'POST',
-      body: formData
-    });
+    const plainFormData = Object.fromEntries(formData.entries());
 
-    setLoading(false);
-    setSubmitted(true);
+    if (formData.get('bilde') && formData.get('bilde').size > 0) {
+      const file = formData.get('bilde');
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        plainFormData.bilde = reader.result;
+
+        await fetch('https://hooks.zapier.com/hooks/catch/23816799/uuwupe8/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(plainFormData)
+        });
+
+        setLoading(false);
+        setSubmitted(true);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      await fetch('https://hooks.zapier.com/hooks/catch/23816799/uuwupe8/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(plainFormData)
+      });
+
+      setLoading(false);
+      setSubmitted(true);
+    }
   };
 
   return (

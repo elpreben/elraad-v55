@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Layout from '../components/Layout';
 
@@ -10,45 +9,57 @@ export default function Kontakt() {
     e.preventDefault();
     setLoading(true);
 
-    const data = {
-      navn: e.target.navn.value,
-      telefon: e.target.telefon.value,
-      email: e.target.email.value,
-      adresse: e.target.adresse.value,
-      postadresse: e.target.postadresse.value
-    };
+    const formData = new FormData(e.target);
+    const plainFormData = Object.fromEntries(formData.entries());
 
-    const res = await fetch('/api/kontakt', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
+    if (formData.get('bilde') && formData.get('bilde').size > 0) {
+      const file = formData.get('bilde');
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        plainFormData.bilde = reader.result;
 
-    setLoading(false);
-    if (res.ok) setSubmitted(true);
+        await fetch('https://hooks.zapier.com/hooks/catch/23816799/uuwupe8/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(plainFormData)
+        });
+
+        setLoading(false);
+        setSubmitted(true);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      await fetch('https://hooks.zapier.com/hooks/catch/23816799/uuwupe8/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(plainFormData)
+      });
+
+      setLoading(false);
+      setSubmitted(true);
+    }
   };
 
   return (
     <Layout>
-      <div className="bg-white p-6 rounded-xl shadow max-w-xl w-full">
-        <h1 className="text-2xl font-bold mb-4 text-center">Kontakt oss</h1>
-        <p className="mb-4 text-center">
-          Fyll ut skjemaet under, og vi vil kontakte deg i løpet av 48 timer.
+      <div className="bg-white shadow p-4 rounded-xl max-w-md w-full">
+        <h1 className="text-xl font-bold mb-2 text-center">Kontakt oss</h1>
+        <p className="mb-3 text-center text-gray-700 text-sm">
+          Fyll ut skjemaet nedenfor for å få personlig hjelp av en autorisert elektroinstallatør.
         </p>
-
         {!submitted ? (
-          <form onSubmit={handleSubmit} className="space-y-3">
-            <input name="navn" type="text" className="w-full border p-2 rounded" placeholder="Navn" required />
-            <input name="telefon" type="text" className="w-full border p-2 rounded" placeholder="Telefonnummer" required />
-            <input name="email" type="email" className="w-full border p-2 rounded" placeholder="E-post" required />
-            <input name="adresse" type="text" className="w-full border p-2 rounded" placeholder="Adresse" required />
-            <input name="postadresse" type="text" className="w-full border p-2 rounded" placeholder="Postadresse" required />
-            <button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-green-500 text-white font-bold py-3 rounded-lg">
+          <form onSubmit={handleSubmit} className="space-y-2" encType="multipart/form-data">
+            <input name="navn" type="text" className="w-full border p-2 rounded text-sm" placeholder="Fullt navn" required />
+            <input name="telefon" type="text" className="w-full border p-2 rounded text-sm" placeholder="Telefonnummer" required />
+            <textarea name="melding" className="w-full border p-2 rounded text-sm" placeholder="Skriv din melding..." required rows="3" />
+            <input name="bilde" type="file" className="w-full border p-2 rounded text-sm" />
+            <input name="email" type="email" className="w-full border p-2 rounded text-sm" placeholder="E-postadresse" required />
+            <button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-green-500 text-white font-bold py-2 rounded-lg text-sm">
               {loading ? 'Sender...' : 'SEND INN'}
             </button>
           </form>
         ) : (
-          <p className="text-center font-semibold text-lg">Takk! Vi tar kontakt innen 48 timer.</p>
+          <p className="text-center font-semibold text-lg">Takk! Vi har mottatt din henvendelse.</p>
         )}
       </div>
     </Layout>

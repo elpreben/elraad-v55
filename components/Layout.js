@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 export default function Layout({ children }) {
   const router = useRouter();
-  const hideOnContactPage = router.pathname === '/kontakt'; // merk at URL er "/kontakt"
+  const hideOnContactPage = router.pathname === '/kontakt';
 
   return (
     <div className="flex flex-col min-h-screen">
