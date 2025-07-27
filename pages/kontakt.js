@@ -33,7 +33,7 @@ export default function Kontakt() {
           <>
             <h1 className="text-lg font-bold mb-2 text-center">Kontakt oss</h1>
             <p className="mb-3 text-center text-gray-700 text-xs">
-              Fyll ut skjema, og vi vil kontakte deg innen 48 timer for råd og veiledning samtale.
+              Fyll ut skjema, og vi vil kontakte deg innen 48 timer på telefon.
               <br />
               <span className="font-semibold">
                 (Estimert avsatt tid: 10–15 minutter per samtale, Kr 50,- inkl. MVA)
