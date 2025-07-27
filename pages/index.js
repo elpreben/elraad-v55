@@ -1,108 +1,41 @@
-import { useState } from 'react';
-import Layout from '../components/Layout';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 
-export default function Home() {
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    const formData = new FormData(e.target);
-    const plainFormData = Object.fromEntries(formData.entries());
-
-    const sendToZapier = async (data) => {
-      try {
-        await fetch('https://hooks.zapier.com/hooks/catch/23816799/uuwupe8/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-      } catch (error) {
-        console.error('Feil ved sending til Zapier:', error);
-      }
-    };
-
-    const file = formData.get('bilde');
-    if (file && file.size > 0) {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        plainFormData.bilde = reader.result;
-        sendToZapier(plainFormData);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      sendToZapier(plainFormData);
-    }
-
-    setLoading(false);
-    setSubmitted(true);
-  };
+export default function Layout({ children }) {
+  const router = useRouter();
+  const hideOnContactPage = router.pathname === '/kontakt';
 
   return (
-    <Layout>
-      <div className="bg-white shadow p-4 rounded-xl max-w-md w-full mx-auto">
-        {!submitted ? (
-          <>
-            <h1 className="text-lg font-bold mb-2 text-center">
-              Hvordan kan vi hjelpe deg?
-            </h1>
-            <p className="mb-3 text-center text-gray-600 text-xs">
-              Fyll ut skjemaet og gi oss så mye info som mulig.
-            </p>
-            <form
-              onSubmit={handleSubmit}
-              className="space-y-2"
-              encType="multipart/form-data"
-            >
-              <textarea
-                name="problem"
-                className="w-full border p-2 rounded text-sm"
-                placeholder="Beskriv problemet..."
-                required
-                rows="2"
-              />
-              <input
-                name="boenhet"
-                type="text"
-                className="w-full border p-2 rounded text-sm"
-                placeholder="Type boenhet"
-                required
-              />
-              <input
-                name="aarstall"
-                type="text"
-                className="w-full border p-2 rounded text-sm"
-                placeholder="Årstall for anlegget"
-                required
-              />
-              <input
-                name="bilde"
-                type="file"
-                className="w-full border p-2 rounded text-sm"
-              />
-              <input
-                name="email"
-                type="email"
-                className="w-full border p-2 rounded text-sm"
-                placeholder="E-postadresse"
-                required
-              />
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-green-500 text-white font-bold py-2 rounded-lg text-sm"
-              >
-                {loading ? 'Sender...' : 'SEND INN'}
-              </button>
-            </form>
-          </>
-        ) : (
-          <p className="text-center font-semibold text-md p-4">
-            Takk! Vi har mottatt din henvendelse, du vil snart få svar av vår Elråd-AI.
-          </p>
-        )}
-      </div>
-    </Layout>
+    <div className="flex flex-col min-h-screen">
+      {/* HEADER */}
+      <header className="bg-white shadow flex items-center justify-between px-4 py-2">
+        <div className="flex items-center">
+          <Image src="/logo.png" alt="Elråd logo" width={110} height={40} />
+        </div>
+        <nav className="flex gap-4 text-black text-sm font-medium">
+          <Link href="/">Hjem</Link>
+          <Link href="/om">Om Elråd</Link>
+          <Link href="/priser">Priser</Link>
+          <Link href="/kontakt">Kontakt oss</Link>
+        </nav>
+      </header>
+
+      {/* MAIN CONTENT */}
+      <main className="flex flex-col items-center justify-start flex-grow bg-gradient-to-b from-blue-100 via-blue-200 to-blue-300 py-4">
+        {children}
+      </main>
+
+      {/* BOTTOM BUTTON */}
+      {!hideOnContactPage && (
+        <div className="w-full flex justify-center p-4 bg-white">
+          <Link href="/kontakt">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-3 rounded-lg shadow-md text-center max-w-xl w-full">
+              Trenger du fortsatt hjelp? Få personlig veiledning fra en autorisert elektroinstallatør.
+            </button>
+          </Link>
+        </div>
+      )}
+    </div>
   );
 }
