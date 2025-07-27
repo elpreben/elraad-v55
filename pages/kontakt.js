@@ -35,11 +35,8 @@ export default function Kontakt() {
             <p className="mb-3 text-center text-gray-700 text-xs">
               Fyll ut skjema, og vi vil kontakte deg innen 48 timer for råd og veiledning samtale.
               <br />
-              <span className="font-semibold">(Estimert tid: 10–15 min per samtale, Kr 50,- inkl. MVA)</span>
+              <span className="font-semibold">
+                (Estimert tid: 10-15 min per samtale, Kr 50,- inkl. MVA)
+              </span>
             </p>
-            <form onSubmit={handleSubmit} className="space-y-2">
-              <input
-                name="navn"
-                type="text"
-                className="w-full border p-2 rounded text-sm"
-                placeholder="Fullt navn"
+            <form onSubmit={handleSubmit} className="spa
