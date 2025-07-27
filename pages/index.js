@@ -45,10 +45,7 @@ export default function Home() {
       <div className="bg-white shadow p-4 rounded-xl max-w-md w-full mt-4">
         {!submitted ? (
           <>
-            <h1 className="text-lg font-bold mb-1 text-center">Hvordan kan vi hjelpe deg?</h1>
-            <p className="mb-2 text-center text-gray-700 text-xs">
-              Fyll ut skjemaet og gi oss så mye info som mulig.
-            </p>
+            <h1 className="text-lg font-bold mb-2 text-center">Hvordan kan vi hjelpe deg?</h1>
             <form onSubmit={handleSubmit} className="space-y-2" encType="multipart/form-data">
               <textarea
                 name="problem"
@@ -68,10 +65,14 @@ export default function Home() {
                 name="aarstall"
                 type="text"
                 className="w-full border p-2 rounded text-sm"
-                placeholder="Årstall"
+                placeholder="Årstall for anlegget"
                 required
               />
-              <input name="bilde" type="file" className="w-full border p-2 rounded text-sm" />
+              <input
+                name="bilde"
+                type="file"
+                className="w-full border p-2 rounded text-sm"
+              />
               <input
                 name="email"
                 type="email"
