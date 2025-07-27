@@ -12,15 +12,15 @@ export default function Home() {
     const formData = new FormData(e.target);
     const plainFormData = Object.fromEntries(formData.entries());
 
-    const sendToZapier = async (data) => {
+    const sendToAPI = async (data) => {
       try {
-        await fetch('https://hooks.zapier.com/hooks/catch/23816799/uuwupe8/', {
+        await fetch('/api/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
       } catch (error) {
-        console.error('Feil ved sending til Zapier:', error);
+        console.error('Feil ved sending til API:', error);
       }
     };
 
@@ -29,11 +29,11 @@ export default function Home() {
       const reader = new FileReader();
       reader.onloadend = async () => {
         plainFormData.bilde = reader.result;
-        sendToZapier(plainFormData);
+        sendToAPI(plainFormData);
       };
       reader.readAsDataURL(file);
     } else {
-      sendToZapier(plainFormData);
+      sendToAPI(plainFormData);
     }
 
     setLoading(false);
