@@ -12,54 +12,82 @@ export default function Kontakt() {
     const formData = new FormData(e.target);
     const plainFormData = Object.fromEntries(formData.entries());
 
-    if (formData.get('bilde') && formData.get('bilde').size > 0) {
-      const file = formData.get('bilde');
+    const sendToAPI = async (data) => {
+      try {
+        await fetch('/api/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+      } catch (error) {
+        console.error('Feil ved sending til API:', error);
+      }
+    };
+
+    const file = formData.get('bilde');
+    if (file && file.size > 0) {
       const reader = new FileReader();
       reader.onloadend = async () => {
         plainFormData.bilde = reader.result;
-
-        await fetch('https://hooks.zapier.com/hooks/catch/23816799/uuwupe8/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(plainFormData)
-        });
-
-        setLoading(false);
-        setSubmitted(true);
+        sendToAPI(plainFormData);
       };
       reader.readAsDataURL(file);
     } else {
-      await fetch('https://hooks.zapier.com/hooks/catch/23816799/uuwupe8/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(plainFormData)
-      });
-
-      setLoading(false);
-      setSubmitted(true);
+      sendToAPI(plainFormData);
     }
+
+    setLoading(false);
+    setSubmitted(true);
   };
 
   return (
     <Layout>
-      <div className="bg-white shadow p-4 rounded-xl max-w-md w-full">
-        <h1 className="text-xl font-bold mb-2 text-center">Kontakt oss</h1>
-        <p className="mb-3 text-center text-gray-700 text-sm">
-          Fyll ut skjemaet nedenfor for å få personlig hjelp av en autorisert elektroinstallatør.
-        </p>
+      <div className="bg-white shadow p-4 rounded-xl max-w-md w-full mt-4">
         {!submitted ? (
-          <form onSubmit={handleSubmit} className="space-y-2" encType="multipart/form-data">
-            <input name="navn" type="text" className="w-full border p-2 rounded text-sm" placeholder="Fullt navn" required />
-            <input name="telefon" type="text" className="w-full border p-2 rounded text-sm" placeholder="Telefonnummer" required />
-            <textarea name="melding" className="w-full border p-2 rounded text-sm" placeholder="Skriv din melding..." required rows="3" />
-            <input name="bilde" type="file" className="w-full border p-2 rounded text-sm" />
-            <input name="email" type="email" className="w-full border p-2 rounded text-sm" placeholder="E-postadresse" required />
-            <button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-green-500 text-white font-bold py-2 rounded-lg text-sm">
-              {loading ? 'Sender...' : 'SEND INN'}
-            </button>
-          </form>
+          <>
+            <h1 className="text-lg font-bold mb-2 text-center">Kontakt oss</h1>
+            <form onSubmit={handleSubmit} className="space-y-2" encType="multipart/form-data">
+              <input
+                name="navn"
+                type="text"
+                className="w-full border p-2 rounded text-sm"
+                placeholder="Fullt navn"
+                required
+              />
+              <input
+                name="telefon"
+                type="text"
+                className="w-full border p-2 rounded text-sm"
+                placeholder="Telefonnummer"
+                required
+              />
+              <textarea
+                name="melding"
+                className="w-full border p-2 rounded text-sm"
+                placeholder="Skriv meldingen din..."
+                required
+                rows="3"
+              />
+              <input name="bilde" type="file" className="w-full border p-2 rounded text-sm" />
+              <input
+                name="email"
+                type="email"
+                className="w-full border p-2 rounded text-sm"
+                placeholder="E-postadresse"
+                required
+              />
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 to-green-500 text-white font-bold py-2 rounded-lg text-sm"
+              >
+                {loading ? 'Sender...' : 'SEND MELDING'}
+              </button>
+            </form>
+          </>
         ) : (
-          <p className="text-center font-semibold text-lg">Takk! Vi har mottatt din henvendelse.</p>
+          <p className="text-center font-semibold text-md">
+            Takk! Vi har mottatt din melding, du vil snart få svar av vår Elråd-AI.
+          </p>
         )}
       </div>
     </Layout>
