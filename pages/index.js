@@ -42,24 +42,26 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="bg-white shadow p-4 rounded-xl max-w-md w-full">
+      <div className="bg-white shadow p-4 rounded-xl max-w-md w-full mx-auto">
         {!submitted ? (
           <>
-            <h1 className="text-xl font-bold mb-2 text-center">
-              Hvordan kan vi hjelpe deg med ditt elektriske anlegg?
+            <h1 className="text-lg font-bold mb-2 text-center">
+              Hvordan kan vi hjelpe deg?
             </h1>
-            <p className="mb-3 text-center text-gray-700 text-sm">
-              Fyll ut skjemaet nedenfor og gi oss så mye informasjon som mulig.<br />
-              Beskriv problemet, oppgi type boenhet og årstall for anlegget.<br />
-              Last gjerne opp et bilde hvis mulig.
+            <p className="mb-3 text-center text-gray-600 text-xs">
+              Fyll ut skjemaet og gi oss så mye info som mulig.
             </p>
-            <form onSubmit={handleSubmit} className="space-y-2" encType="multipart/form-data">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-2"
+              encType="multipart/form-data"
+            >
               <textarea
                 name="problem"
                 className="w-full border p-2 rounded text-sm"
                 placeholder="Beskriv problemet..."
                 required
-                rows="3"
+                rows="2"
               />
               <input
                 name="boenhet"
@@ -96,7 +98,7 @@ export default function Home() {
             </form>
           </>
         ) : (
-          <p className="text-center font-semibold text-lg">
+          <p className="text-center font-semibold text-md p-4">
             Takk! Vi har mottatt din henvendelse, du vil snart få svar av vår Elråd-AI.
           </p>
         )}
