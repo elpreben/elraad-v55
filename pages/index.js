@@ -49,20 +49,15 @@ export default function Home() {
           Beskriv problemet, oppgi type boenhet og årstall for anlegget.<br />
           Last gjerne opp et bilde hvis mulig.
         </p>
-        {!submitted ? (
-          <form onSubmit={handleSubmit} className="space-y-2" encType="multipart/form-data">
-            <textarea name="problem" className="w-full border p-2 rounded text-sm" placeholder="Beskriv problemet..." required rows="3" />
-            <input name="boenhet" type="text" className="w-full border p-2 rounded text-sm" placeholder="Type boenhet" required />
-            <input name="aarstall" type="text" className="w-full border p-2 rounded text-sm" placeholder="Årstall for anlegget" required />
-            <input name="bilde" type="file" className="w-full border p-2 rounded text-sm" />
-            <input name="email" type="email" className="w-full border p-2 rounded text-sm" placeholder="E-postadresse" required />
-            <button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-green-500 text-white font-bold py-2 rounded-lg text-sm">
-              {loading ? 'Sender...' : 'SEND INN'}
-            </button>
-          </form>
-        ) : (
-          <p className="text-center font-semibold text-lg">Takk! Vi har mottatt din henvendelse.</p>
-        )}
+   {!submitted ? (
+  <form onSubmit={handleSubmit} className="space-y-2" encType="multipart/form-data">
+    ...
+  </form>
+) : (
+  <p className="text-center font-semibold text-lg">
+    Takk! Vi har mottatt din henvendelse, du vil snart få svar av vår Elråd-AI.
+  </p>
+)}
       </div>
     </Layout>
   );
