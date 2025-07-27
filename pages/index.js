@@ -43,62 +43,25 @@ export default function Home() {
   return (
     <Layout>
       <div className="bg-white shadow p-4 rounded-xl max-w-md w-full">
+        <h1 className="text-xl font-bold mb-2 text-center">Hvordan kan vi hjelpe deg med ditt elektriske anlegg?</h1>
+        <p className="mb-3 text-center text-gray-700 text-sm">
+          Fyll ut skjemaet nedenfor og gi oss så mye informasjon som mulig.<br />
+          Beskriv problemet, oppgi type boenhet og årstall for anlegget.<br />
+          Last gjerne opp et bilde hvis mulig.
+        </p>
         {!submitted ? (
-          <>
-            <h1 className="text-xl font-bold mb-2 text-center">
-              Hvordan kan vi hjelpe deg med ditt elektriske anlegg?
-            </h1>
-            <p className="mb-3 text-center text-gray-700 text-sm">
-              Fyll ut skjemaet nedenfor og gi oss så mye informasjon som mulig.<br />
-              Beskriv problemet, oppgi type boenhet og årstall for anlegget.<br />
-              Last gjerne opp et bilde hvis mulig.
-            </p>
-            <form onSubmit={handleSubmit} className="space-y-2" encType="multipart/form-data">
-              <textarea
-                name="problem"
-                className="w-full border p-2 rounded text-sm"
-                placeholder="Beskriv problemet..."
-                required
-                rows="3"
-              />
-              <input
-                name="boenhet"
-                type="text"
-                className="w-full border p-2 rounded text-sm"
-                placeholder="Type boenhet"
-                required
-              />
-              <input
-                name="aarstall"
-                type="text"
-                className="w-full border p-2 rounded text-sm"
-                placeholder="Årstall for anlegget"
-                required
-              />
-              <input
-                name="bilde"
-                type="file"
-                className="w-full border p-2 rounded text-sm"
-              />
-              <input
-                name="email"
-                type="email"
-                className="w-full border p-2 rounded text-sm"
-                placeholder="E-postadresse"
-                required
-              />
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-green-500 text-white font-bold py-2 rounded-lg text-sm"
-              >
-                {loading ? 'Sender...' : 'SEND INN'}
-              </button>
-            </form>
-          </>
+          <form onSubmit={handleSubmit} className="space-y-2" encType="multipart/form-data">
+            <textarea name="problem" className="w-full border p-2 rounded text-sm" placeholder="Beskriv problemet..." required rows="3" />
+            <input name="boenhet" type="text" className="w-full border p-2 rounded text-sm" placeholder="Type boenhet" required />
+            <input name="aarstall" type="text" className="w-full border p-2 rounded text-sm" placeholder="Årstall for anlegget" required />
+            <input name="bilde" type="file" className="w-full border p-2 rounded text-sm" />
+            <input name="email" type="email" className="w-full border p-2 rounded text-sm" placeholder="E-postadresse" required />
+            <button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-green-500 text-white font-bold py-2 rounded-lg text-sm">
+              {loading ? 'Sender...' : 'SEND INN'}
+            </button>
+          </form>
         ) : (
-          <p className="text-center font-semibold text-lg">
-            Takk! Vi har mottatt din henvendelse, du vil snart få svar av vår Elråd-AI.
-          </p>
+          <p className="text-center font-semibold text-lg">Takk! Vi har mottatt din henvendelse.</p>
         )}
       </div>
     </Layout>
